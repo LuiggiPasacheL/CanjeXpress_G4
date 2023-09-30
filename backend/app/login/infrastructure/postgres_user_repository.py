@@ -1,8 +1,10 @@
 import psycopg2
-from  ..pkg.config import DATABASE_CONFIG
-from ..domain.user import User
 
-class UserRepository:
+from domain.user_repository import UserRepository
+from pkg.config import DATABASE_CONFIG
+from domain.user import User
+
+class PostgresUserRepository(UserRepository):
     def __init__(self):
         self.conn = psycopg2.connect(
             host=DATABASE_CONFIG['host'],
