@@ -3,5 +3,5 @@ DATABASE_CONFIG = {
     'port': 5432,
     'database': 'canjexpress',
     'user': 'postgres',
-    'password': 'root'
+    'password': 'luiggi_123'
 }
