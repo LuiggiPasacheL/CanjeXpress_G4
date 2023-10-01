@@ -1,9 +1,10 @@
 import psycopg2
-from  ..pkg.config import DATABASE_CONFIG
-from ..domain.user import User
-import bcrypt 
 
-class UserRepository:
+from domain.user_repository import UserRepository
+from pkg.config import DATABASE_CONFIG
+from domain.user import User
+
+class PostgresUserRepository(UserRepository):
     def __init__(self):
         self.conn = psycopg2.connect(
             host=DATABASE_CONFIG['host'],
@@ -13,7 +14,7 @@ class UserRepository:
             password=DATABASE_CONFIG['password']
         )
 
-    def get_user_by_username(self, username: str) -> User:
+    def get_user_by_username(self, username: str) -> User | None:
         cur = self.conn.cursor()
         query = "SELECT username, password FROM users WHERE username = %s"
         cur.execute(query, (username,))
