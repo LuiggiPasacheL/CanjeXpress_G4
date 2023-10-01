@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from app.login.application.login_service import LoginService
-from app.login.infrastructure.postgres_user_repository import PostgresUserRepository
+from application.login_service import LoginService
+from infrastructure.postgres_user_repository import PostgresUserRepository
 
 app = Flask(__name__)
 login_service = LoginService(PostgresUserRepository())
