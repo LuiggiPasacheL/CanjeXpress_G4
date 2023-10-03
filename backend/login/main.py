@@ -1,11 +1,11 @@
+import os
+
 from flask import Flask, request, jsonify, render_template
 from application.login_service import LoginService
 from infrastructure.postgres_user_repository import PostgresUserRepository
 
 app = Flask(__name__)
 login_service = LoginService(PostgresUserRepository())
-from app.login.application.login_service import LoginService
-import os
 
 template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 template_dir = os.path.join(template_dir, 'frontend')
