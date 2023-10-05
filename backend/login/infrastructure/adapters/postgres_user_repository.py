@@ -1,17 +1,17 @@
 import psycopg2
+import os
 
 from application.ports.user_repository import UserRepository
-from pkg.config import DATABASE_CONFIG
 from domain.user import User
 
 class PostgresUserRepository(UserRepository):
     def __init__(self):
         self.conn = psycopg2.connect(
-            host=DATABASE_CONFIG['host'],
-            port=DATABASE_CONFIG['port'],
-            dbname=DATABASE_CONFIG['database'],
-            user=DATABASE_CONFIG['user'],
-            password=DATABASE_CONFIG['password']
+            host=os.getenv('DATABASE_HOST'),
+            port=os.getenv('DATABASE_PORT'),
+            dbname=os.getenv('DATABASE_NAME'),
+            user=os.getenv('DATABASE_USER'),
+            password=os.getenv('DATABASE_PASSWORD')
         )
 
     def get_user_by_username(self, username: str) -> User | None:
