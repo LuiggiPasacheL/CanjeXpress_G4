@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, request, jsonify, render_template
 from application.login_service import LoginService
-from infrastructure.postgres_user_repository import PostgresUserRepository
+from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 
 app = Flask(__name__)
 login_service = LoginService(PostgresUserRepository())

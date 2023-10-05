@@ -1,5 +1,5 @@
 import bcrypt
-from domain.user_repository import UserRepository
+from application.ports.user_repository import UserRepository
 
 class LoginService:
     def __init__(self, user_repository: UserRepository):

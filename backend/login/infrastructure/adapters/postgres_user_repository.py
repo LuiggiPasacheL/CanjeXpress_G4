@@ -1,6 +1,6 @@
 import psycopg2
 
-from domain.user_repository import UserRepository
+from application.ports.user_repository import UserRepository
 from pkg.config import DATABASE_CONFIG
 from domain.user import User
 
