@@ -4,5 +4,5 @@ from abc import ABC, abstractmethod
 class DataExtractor(ABC):
 
     @abstractmethod
-    def Extract(self):
+    def createFile(self) -> str:
         pass

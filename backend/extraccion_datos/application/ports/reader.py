@@ -7,5 +7,5 @@ class Reader(ABC):
     """
 
     @abstractmethod
-    def Read(self):
+    def read(self, file_path: str) -> str:
         pass
