@@ -14,7 +14,7 @@ class PostgresRepository(Repository):
             password=os.getenv("DATABASE_PASSWORD", "postgres")
         )
 
-    def BulkInsert(self, data: list):
+    def bulkInsertData(self, data: list):
         """ Insert list data into database """
         cursor = self.connection.cursor()
         cursor.executemany(
