@@ -10,8 +10,11 @@ class ExtraccionDatosUseCase:
             if len(file_paths) == 0:
                 return False
             for path in file_paths:
-                data = reader.read(path)
-                repository.bulkInsertData(data)
+                file = reader.read(path)
+                if file is None:
+                    print(f"Error al leer el archivo {path}")
+                    return False
+                repository.bulkInsertData(file)
             return True
         except Exception as e:
             print(e)

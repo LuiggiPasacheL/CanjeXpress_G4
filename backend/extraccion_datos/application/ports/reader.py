@@ -1,5 +1,6 @@
 
 from abc import ABC, abstractmethod
+from io import TextIOWrapper
 
 class Reader(ABC):
     """
@@ -7,5 +8,5 @@ class Reader(ABC):
     """
 
     @abstractmethod
-    def read(self, file_path: str) -> str:
+    def read(self, file_path: str) -> TextIOWrapper | None:
         pass
