@@ -1,6 +1,6 @@
 
 import os
-from extraccion_datos.application.ports.dataExtractor import DataExtractor
+from application.ports.dataExtractor import DataExtractor
 
 
 class FileExtractor(DataExtractor):
@@ -9,4 +9,8 @@ class FileExtractor(DataExtractor):
         self.dir_path = dir_path
     
     def getFiles(self) -> list[str]:
-        return os.listdir(self.dir_path)
+        listdir = os.listdir(self.dir_path)
+        for i in range(len(listdir)):
+            path = self.dir_path + '/'
+            listdir[i] = path + listdir[i]
+        return listdir

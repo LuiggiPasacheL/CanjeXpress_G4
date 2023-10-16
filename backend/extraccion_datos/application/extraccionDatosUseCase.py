@@ -1,7 +1,7 @@
 
-from extraccion_datos.application.ports.dataExtractor import DataExtractor
-from extraccion_datos.application.ports.reader import Reader
-from extraccion_datos.application.ports.repository import Repository
+from application.ports.dataExtractor import DataExtractor
+from application.ports.reader import Reader
+from application.ports.repository import Repository
 
 class ExtraccionDatosUseCase:
     def extraerDatos(self, dataExtractor: DataExtractor, reader: Reader, repository: Repository):
