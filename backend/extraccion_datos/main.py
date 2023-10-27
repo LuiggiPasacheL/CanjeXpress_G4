@@ -1,25 +1,33 @@
 
 import os
+import time
+import logging
 
-from os import path
 from application.extraccionDatosUseCase import ExtraccionDatosUseCase
-
 from infrastructure.adapters.fileExtractor import FileExtractor
-from infrastructure.adapters.fileReader import FileReader
 from infrastructure.adapters.mockRepository import MockRepository
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    handlers=[
+        logging.FileHandler("logs.log"),
+        logging.StreamHandler()
+    ]
+)
 
 def main():
 
-    dataExtractor = FileExtractor(path.join(path.dirname(__file__), "data"))
-    reader = FileReader(encoding="utf-8")
+    dataExtractor = FileExtractor(os.path.join(os.path.dirname(__file__), "data"))
     repository = MockRepository(table_name=os.getenv("TABLE_NAME", "data"))
 
     extraccionDatosUseCase = ExtraccionDatosUseCase()
-    ok : bool = extraccionDatosUseCase.extraerDatos(dataExtractor, reader, repository)
 
-    if ok:
-        print("Datos extraidos correctamente")
+    logging.info("Iniciando extracción de datos")
+
+    while True:
+        extraccionDatosUseCase.extraerDatos(dataExtractor, repository)
+        time.sleep(5)
 
 if __name__ == "__main__":
     main()

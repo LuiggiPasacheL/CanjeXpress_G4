@@ -1,21 +1,15 @@
 
+import logging
+
 from application.ports.dataExtractor import DataExtractor
-from application.ports.reader import Reader
 from application.ports.repository import Repository
+from domain.file import File
 
 class ExtraccionDatosUseCase:
-    def extraerDatos(self, dataExtractor: DataExtractor, reader: Reader, repository: Repository):
+    def extraerDatos(self, dataExtractor: DataExtractor, repository: Repository):
         try:
-            file_paths : list[str] = dataExtractor.getFiles()
-            if len(file_paths) == 0:
-                return False
-            for path in file_paths:
-                file = reader.read(path)
-                if file is None:
-                    print(f"Error al leer el archivo {path}")
-                    return False
-                repository.bulkInsertData(file)
-            return True
+            files : list[File] = dataExtractor.getFiles()
+            for file in files:
+                repository.bulkInsertFile(file)
         except Exception as e:
-            print(e)
-            return False
+            logging.error(f"Error al extraer datos {e.__class__.__name__}")
