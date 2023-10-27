@@ -7,10 +7,9 @@ from infrastructure.adapters.postgres_user_repository import PostgresUserReposit
 app = Flask(__name__)
 login_service = LoginService(PostgresUserRepository())
 
-template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-template_dir = os.path.join(template_dir, 'frontend')
-template_dir = os.path.join(template_dir, 'templates')
-print(f"templates route: {template_dir}")
+@app.route('/', methods=['GET'])
+def index():
+    return 'Hello World!'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -25,4 +24,4 @@ def login():
     return render_template('login.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=os.getenv('PORT', 5000))
