@@ -16,6 +16,7 @@ def index():
     return 'Hello World!'
 
 @app.route('/login', methods=['GET', 'POST'])
+@cross_origin()
 def login():
 
     if request.method == 'POST':
