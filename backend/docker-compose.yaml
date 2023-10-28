@@ -25,7 +25,7 @@ services:
     volumes:
       - db-canjexpress-login:/var/lib/postgresql
     networks:
-      - rabbitnq-network
+      - rabbitmq-network
 
   extraccion_datos:
     build: ./extraccion_datos/
