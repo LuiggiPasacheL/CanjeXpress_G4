@@ -1,5 +1,5 @@
-import os
-import threading
+import os,logging
+import threading,time
 from flask import Flask, request, jsonify
 from application.canje_service import CanjeService
 from infrastructure.adapters.postgres_user_query_repository import PostgresUserQueryRepository
@@ -8,7 +8,8 @@ from infrastructure.adapters.postgres_product_query_repository import PostgresPr
 from infrastructure.adapters.postgres_product_command_repository import PostgresProductCommandRepository
 from infrastructure.adapters.rabbitmq_consumer import consume_message
 from flask_cors import CORS
-
+logging.basicConfig(level=logging.INFO)
+logging.getLogger("pika").setLevel(logging.WARNING) 
 app = Flask(__name__)
 CORS(app)
 
@@ -37,4 +38,5 @@ def start_consumer():
 if __name__ == '__main__':
     consumer_thread = threading.Thread(target=start_consumer)
     consumer_thread.start()
+    time.sleep(2)
     app.run(debug=True, host='0.0.0.0', port=os.getenv('PORT', 5000))
