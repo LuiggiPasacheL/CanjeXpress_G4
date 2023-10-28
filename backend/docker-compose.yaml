@@ -1,0 +1,55 @@
+version: '3'
+services:
+  login:
+    build: ./login/
+    env_file:
+      - ./login/.env
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - login-db
+    networks:
+      - rabbitmq-network
+
+  login-db:
+    image: postgres:16.0-alpine3.18
+    restart: always
+    env_file:
+      - ./login/.env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - db-canjexpress-login:/var/lib/postgresql
+    networks:
+      - rabbitnq-network
+
+  extraccion_datos:
+    build: ./extraccion_datos/
+    env_file:
+      - ./extraccion_datos/.env
+    networks:
+      - rabbitmq-network
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: "user"
+      RABBITMQ_DEFAULT_PASS: "password"
+    networks:
+      - rabbitmq-network
+
+volumes:
+  db-canjexpress-login:
+  rabbitmq-data:
+
+networks:
+  rabbitmq-network:
