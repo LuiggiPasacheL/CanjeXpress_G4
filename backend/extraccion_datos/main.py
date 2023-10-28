@@ -17,8 +17,9 @@ logging.basicConfig(
 )
 
 def main():
+    directory = os.path.join(os.path.dirname(__file__), "data")
 
-    dataExtractor = FileExtractor(os.path.join(os.path.dirname(__file__), "data"))
+    dataExtractor = FileExtractor(directory)
     repository = MockRepository(table_name=os.getenv("TABLE_NAME", "data"))
 
     extraccionDatosUseCase = ExtraccionDatosUseCase()

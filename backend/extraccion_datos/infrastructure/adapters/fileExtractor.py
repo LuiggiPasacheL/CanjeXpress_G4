@@ -8,6 +8,10 @@ class FileExtractor(DataExtractor):
     def __init__(self, dir_path: str):
         self.dir_path = dir_path
         self.registry = set()
+        try:
+            os.stat(dir_path)
+        except:
+            os.mkdir(dir_path)
     
     def getFiles(self) -> list[File]:
         listdir = os.listdir(self.dir_path)
