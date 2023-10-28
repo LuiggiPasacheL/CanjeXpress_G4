@@ -1,11 +1,8 @@
 import psycopg2
 import os
+from application.ports.product_command_repository import ProductCommandRepository
 
-from application.ports.product_repository import ProductRepository
-from domain.product import Product
-
-
-class PostgresProductRepository(ProductRepository):
+class PostgresProductCommandRepository(ProductCommandRepository):
     def __init__(self):
         self.conn = psycopg2.connect(
             database=os.getenv('DB_NAME'),
@@ -15,16 +12,6 @@ class PostgresProductRepository(ProductRepository):
             port=os.getenv('DB_PORT'),
         )
 
-    def get_product_by_id(self, product_id: int) -> Product:
-        cur = self.conn.cursor()
-        query = "SELECT id, name, points, description, image_url, quantity FROM products WHERE id = %s"
-        cur.execute(query, (product_id,))
-        r = cur.fetchone()
-        cur.close()
-        if r:
-            return Product(r[0], r[1], r[2], r[3], r[4], r[5])
-        else:
-            return None
     def deduct_product_quantity(self, product_id: int, quantity: int):
         cur = self.conn.cursor()
         query = "UPDATE products SET quantity = quantity - %s WHERE id = %s AND quantity >= %s"
@@ -33,7 +20,7 @@ class PostgresProductRepository(ProductRepository):
         self.conn.commit()
         cur.close()
         return affected_rows > 0
-    
+
     def register_exchange(self, user_id: int, cart: list, total_points: int):
         cur = self.conn.cursor()
         query = """

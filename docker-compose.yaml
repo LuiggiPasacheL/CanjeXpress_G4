@@ -6,11 +6,21 @@ services:
     env_file:
       - ./backend/login/.env
     ports:
-      - "${PORT}:${PORT}"
+      - "3000:3000"
     depends_on:
       - db
     networks:
       - rabbitmq-network
+  canje:
+    build: ./backend/canje/
+    env_file:
+      - ./backend/canje/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    networks:
+      - rabbitmq-network  
 
   db:
     image: postgres:16.0-alpine3.18
@@ -36,7 +46,7 @@ services:
       - db
     networks:
       - rabbitmq-network
-
+  
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
