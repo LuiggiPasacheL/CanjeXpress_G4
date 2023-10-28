@@ -26,7 +26,7 @@ class CanjeService:
 
         user_exists = self.user_query_repository.user_exists(user_id)
         if not user_exists:
-            publish_message('canje_queue', 'Error al procesar canje')
+            publish_message('canje_queue', 'Error al procesar canje : USER_NOT_FOUND')
             return {"success": False, "message": "USER_NOT_FOUND"}
 
         for item in cart:
@@ -39,15 +39,19 @@ class CanjeService:
             total_points_needed += product.points * item['quantity']
 
         if not_found_products:
+            publish_message('canje_queue', f'''PRODUCT_NOT_FOUND: {not_found_products}''', )
             return {"success": False, "message": "PRODUCT_NOT_FOUND", "products": not_found_products}
 
         if insufficient_stock_products:
+            publish_message('canje_queue', f'''INSUFFICIENT_STOCK: {insufficient_stock_products}''', )
             return {"success": False, "message": "INSUFFICIENT_STOCK", "products": insufficient_stock_products}
 
         user_points = self.user_query_repository.get_user_points(user_id)
         if user_points < total_points_needed:
             logging.info(f"USER POINTS: {user_points}")
             logging.info(f"TOTAL POINTS: {total_points_needed}")
+            publish_message('canje_queue', f'''INSUFFICIENT_POINTS: \nUSER POINTS: {user_points} \n TOTAL POINTS: {total_points_needed}''', )
+
             return {"success": False, "message": "INSUFFICIENT_POINTS"}
 
         for item in cart:

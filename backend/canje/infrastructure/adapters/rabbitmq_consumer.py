@@ -1,11 +1,14 @@
 
-import pika
+import pika,time,logging
 
 def callback(ch, method, properties, body):
     # Por ahora, simplemente imprime el mensaje.
-    print(f" [x] Received {body}")
+
+    logging.critical(f'''\n\n\n##################\n\n\n [x] Received {body}\n\n\n##################\n\n\n''')
+
 
 def consume_message(queue_name):
+    time.sleep(5)
     credentials = pika.PlainCredentials(username='user', password='password')
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', credentials=credentials))   
     channel = connection.channel()
