@@ -1,14 +1,46 @@
+<template>
+  <Navbar />
+  <router-view v-if="products" style="min-height: 60vh" :API_URL="API_URL" :products="products">
+  </router-view>
+  <Footer />
+</template>
+
 <script>
 import { RouterLink, RouterView } from 'vue-router'
+import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
 
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      API_URL: import.meta.env.VITE_API_URL,
+      products: null
+    }
+  },
+
+  components: {
+    Navbar,
+    Footer
+  },
+
+  methods: {
+    async fetchData() {
+      fetch(`${this.API_URL}/products/`)
+        .then((res) => res.json())
+        .then((json) => {
+          this.products = json
+        })
+        .catch((err) => {
+          console.error('Error al cargar los datos: ', err)
+        })
+    }
+  },
+  mounted() {
+    this.fetchData()
+  }
 }
 </script>
-
-<template>
-  <RouterView />
-</template>
 
 <style>
 #app {
