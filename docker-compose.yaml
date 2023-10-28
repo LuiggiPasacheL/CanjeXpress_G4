@@ -2,16 +2,17 @@ version: '3'
 services:
   login:
     build: ./backend/login/
+    restart: on-failure:2
     env_file:
       - ./backend/login/.env
     ports:
       - "${PORT}:${PORT}"
     depends_on:
-      - login-db
+      - db
     networks:
       - rabbitmq-network
 
-  login-db:
+  db:
     image: postgres:16.0-alpine3.18
     restart: always
     env_file:
@@ -31,6 +32,8 @@ services:
     build: ./backend/extraccion_datos/
     env_file:
       - ./backend/extraccion_datos/.env
+    depends_on:
+      - db
     networks:
       - rabbitmq-network
 
@@ -48,9 +51,10 @@ services:
       - rabbitmq-network
 
   front:
-    build: ./frontend/
-    env_file:
-      - ./frontend/.env
+    build: 
+      context: ./frontend/
+      args:
+        VITE_API_URL: http://localhost:5000
     ports:
       - "80:80"
     networks:
