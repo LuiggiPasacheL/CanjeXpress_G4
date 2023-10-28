@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-extract
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: extract
+  template:
+    metadata:
+      labels:
+        app: extract
+    spec:
+      containers:
+        - name: extract
+          image: luiggip/g5_arqui_extract:latest
