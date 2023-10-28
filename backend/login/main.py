@@ -3,10 +3,11 @@ import os
 from flask import Flask, request, jsonify, render_template
 from application.login_service import LoginService
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 login_service = LoginService(PostgresUserRepository())
 
