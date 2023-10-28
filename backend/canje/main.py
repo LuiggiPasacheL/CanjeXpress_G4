@@ -1,17 +1,23 @@
 import os
+import threading
 from flask import Flask, request, jsonify
 from application.canje_service import CanjeService
-from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
-from infrastructure.adapters.postgres_product_repository import PostgresProductRepository
+from infrastructure.adapters.postgres_user_query_repository import PostgresUserQueryRepository
+from infrastructure.adapters.postgres_user_command_repository import PostgresUserCommandRepository
+from infrastructure.adapters.postgres_product_query_repository import PostgresProductQueryRepository
+from infrastructure.adapters.postgres_product_command_repository import PostgresProductCommandRepository
+from infrastructure.adapters.rabbitmq_consumer import consume_message
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-user_repository = PostgresUserRepository()
-product_repository = PostgresProductRepository()
+user_query_repository = PostgresUserQueryRepository()
+user_command_repository = PostgresUserCommandRepository()
+product_query_repository = PostgresProductQueryRepository()
+product_command_repository = PostgresProductCommandRepository()
 
-canje_service = CanjeService(user_repository, product_repository)
+canje_service = CanjeService(user_query_repository, user_command_repository, product_query_repository, product_command_repository)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -25,5 +31,10 @@ def canjear():
     result = canje_service.canjear(user_id, cart)
     return jsonify(result)
 
+def start_consumer():
+    consume_message('canje_queue')
+
 if __name__ == '__main__':
+    consumer_thread = threading.Thread(target=start_consumer)
+    consumer_thread.start()
     app.run(debug=True, host='0.0.0.0', port=os.getenv('PORT', 5000))

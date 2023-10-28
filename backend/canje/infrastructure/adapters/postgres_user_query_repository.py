@@ -1,10 +1,9 @@
 import psycopg2
 import os
-
-from application.ports.user_repository import UserRepository
+from application.ports.user_query_repository import UserQueryRepository
 from domain.user import User
 
-class PostgresUserRepository(UserRepository):
+class PostgresUserQueryRepository(UserQueryRepository):
     def __init__(self):
         self.conn = psycopg2.connect(
             database=os.getenv('DB_NAME'),
@@ -33,18 +32,10 @@ class PostgresUserRepository(UserRepository):
         cur.close()
         return r[0] if r else 0
 
-    def deduct_points(self, user_id: int, points: int):
-        cur = self.conn.cursor()
-        query = "UPDATE users SET points = points - %s WHERE id = %s"
-        cur.execute(query, (points, user_id))
-        self.conn.commit()
-        cur.close()
-
-
     def user_exists(self, user_id: int) -> bool:
         cur = self.conn.cursor()
         query = "SELECT id FROM users WHERE id = %s"
         cur.execute(query, (user_id,))
         r = cur.fetchone()
         cur.close()
-        return r is not None        
+        return r is not None

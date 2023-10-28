@@ -33,7 +33,12 @@ services:
       - ./extraccion_datos/.env
     networks:
       - rabbitmq-network
-
+  canje:
+    build: ./backend/canje/
+    env_file:
+      - ./backend/canje/.env
+    networks:
+      - rabbitmq-network
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
