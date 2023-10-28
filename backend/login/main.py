@@ -24,7 +24,7 @@ def login():
         result = login_service.login(username, password)
         return jsonify(result)
 
-    return 'Login Page'
+    return 'Login Page with CORS enabled'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.getenv('PORT', 5000))
