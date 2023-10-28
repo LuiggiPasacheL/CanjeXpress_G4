@@ -1,6 +1,10 @@
+
 # Paso 1: Construye la aplicación Vue.js
 FROM node:21 AS build
 WORKDIR /app
+ARG VITE_API_URL=http://service-login:5000
+ENV VITE_API_URL=$VITE_API_URL
+RUN echo "VITE_API_URL=$VITE_API_URL" > .env
 COPY package*.json ./
 RUN npm install
 COPY . .
