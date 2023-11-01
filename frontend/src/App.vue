@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <router-view v-if="products" style="min-height: 60vh" :API_URL="API_URL" :products="products">
+  <router-view style="min-height: 60vh" :API_URL="API_URL">
   </router-view>
   <Footer />
 </template>
