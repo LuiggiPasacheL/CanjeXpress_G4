@@ -61,11 +61,22 @@ services:
     networks:
       - rabbitmq-network
 
+  nginx:
+    build: ./nginx/
+    ports:
+      - "8080:80"
+    networks:
+      - rabbitmq-network
+    depends_on:
+      - front
+      - login
+      - canje
+
   front:
     build: 
       context: ./frontend/
       args:
-        VITE_API_URL: http://localhost:3000
+        VITE_API_URL: http://localhost:8080/api
     ports:
       - "80:80"
     networks:
