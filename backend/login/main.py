@@ -15,6 +15,7 @@ jwt = JWTManager(app)
 
 login_service = LoginService(PostgresUserRepository())
 
+
 @app.route('/validate', methods=['GET'])
 @jwt_required()
 def index():
