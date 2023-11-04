@@ -1,21 +1,62 @@
-
 import os
-from flask import Flask
+
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+from application.getProductUseCase import GetProductUseCase
+from infrastructure.adapters.postgresProductsRepository import PostgresProductsRepository
+from infrastructure.database import init_db
+from ariadne import graphql_sync, make_executable_schema, load_schema_from_path
+from ariadne.explorer import ExplorerGraphiQL
+from infrastructure.graphqlResolvers import query
+
+type_defs = load_schema_from_path("schema.graphql")
+schema = make_executable_schema(type_defs, query)
 
 app = Flask(__name__)
 CORS(app)
 
-DATABASE_URL = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+repository = PostgresProductsRepository()
 
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
 
+@app.route('/products/<int:id>')
+def get_products(id: int):
+    getProductsUseCase = GetProductUseCase(repository)
+    product = getProductsUseCase.execute(id=id)
+    if product is None:
+        return 'Product not found', 404
+    return jsonify({
+        'id': product.id,
+        'name': product.name,
+        'pricePoint': product.pricePoint,
+        'quantity': product.quantity
+    })
+
+
+explorer_html = ExplorerGraphiQL().html(None)
+@app.route('/graphql', methods=['GET'])
+def graphqlPlayground():
+    return explorer_html, 200
+
+@app.route('/graphql', methods=['POST'])
+def graphqlServer():
+    # GraphQL queries are always sent as POST
+    data = request.get_json()
+
+    # Note: Passing the request to the context is optional.
+    # In Flask, the current request is always accessible as flask.request
+    success, result = graphql_sync(
+        schema,
+        data,
+        context_value={"request": request},
+        debug=app.debug
+    )
+
+    status_code = 200 if success else 400
+    return jsonify(result), status_code
+
 if __name__ == '__main__':
-    app.run(debug=True, host=os.getenv('HOST', 'localhost'), port=int(os.getenv('PORT', 5000)))
+    init_db(app)
+    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
