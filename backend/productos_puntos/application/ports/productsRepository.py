@@ -9,15 +9,15 @@ class ProductsRepository(ABC):
         pass
 
     @abstractmethod
-    def getProduct(self, id: int) -> Product:
+    def getProduct(self, id: int) -> Product|None:
         pass
 
     @abstractmethod
-    def addProduct(self, product: Product):
+    def addProduct(self, product: Product) -> Product|None:
         pass
 
     @abstractmethod
-    def updateProduct(self, id: int, product: Product):
+    def updateProduct(self, id: int, product: Product) -> Product|None:
         pass
 
     @abstractmethod

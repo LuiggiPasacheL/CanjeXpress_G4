@@ -14,14 +14,14 @@ class ProductDBModel(db.Model):
     def from_model(self, product: Product):
         self.id = product.id
         self.name = product.name
-        self.pricePoint = product.pricePoint
+        self.price_point = product.pricePoint
         self.quantity = product.quantity
 
     def to_model(self) -> Product:
         return Product(
             id=self.id,
             name=self.name,
-            pricePoint=self.pricePoint,
+            pricePoint=self.price_point,
             quantity=self.quantity
         )
 
@@ -29,8 +29,6 @@ class ProductDBModel(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'pricePoint': self.pricePoint,
+            'pricePoint': self.price_point,
             'quantity': self.quantity
         }
-
-

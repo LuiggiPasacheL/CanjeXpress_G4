@@ -2,9 +2,9 @@
 from application.ports.productsRepository import ProductsRepository
 from domain.product import Product
 
-class GetProductUseCase:
+class CreateProductUseCase:
     def __init__(self, productRepository: ProductsRepository):
         self.productRepository = productRepository
 
-    def execute(self, id: int) -> Product|None:
-        return self.productRepository.getProduct(id)
+    def execute(self, product: Product) -> Product|None:
+        return self.productRepository.addProduct(product)

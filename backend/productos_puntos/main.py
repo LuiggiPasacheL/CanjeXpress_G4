@@ -7,10 +7,10 @@ from infrastructure.adapters.postgresProductsRepository import PostgresProductsR
 from infrastructure.database import init_db
 from ariadne import graphql_sync, make_executable_schema, load_schema_from_path
 from ariadne.explorer import ExplorerGraphiQL
-from infrastructure.graphqlResolvers import query
+from infrastructure.graphqlResolvers import query, mutation
 
 type_defs = load_schema_from_path("schema.graphql")
-schema = make_executable_schema(type_defs, query)
+schema = make_executable_schema(type_defs, query, mutation)
 
 app = Flask(__name__)
 CORS(app)
