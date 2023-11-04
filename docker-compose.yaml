@@ -2,8 +2,13 @@ version: '3'
 services:
   login:
     build: ./backend/login/
-    env_file:
-      - ./backend/login/.env
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "canjexpress"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+      PORT: 3000
     ports:
       - "3000:3000"
     depends_on:
@@ -12,8 +17,13 @@ services:
       - rabbitmq-network
   canje:
     build: ./backend/canje/
-    env_file:
-      - ./backend/canje/.env
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "canjexpress"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+      PORT: 3001
     ports:
       - "3001:3001"
     depends_on:
@@ -26,11 +36,11 @@ services:
     image: postgres:16.0-alpine3.18
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "canjexpress"
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "5432:5432"
     volumes:
       - db-canjexpress-login:/var/lib/postgresql
     networks:
@@ -38,10 +48,15 @@ services:
 
   extraccion_datos:
     build: ./backend/extraccion_datos/
-    env_file:
-      - ./backend/extraccion_datos/.env
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "canjexpress"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
     depends_on:
       - db
+      - login
     networks:
       - rabbitmq-network
   
