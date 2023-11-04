@@ -2,43 +2,78 @@ version: '3'
 services:
   login:
     build: ./login/
-    env_file:
-      - ./login/.env
+    restart: always
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "canjexpress"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+      PORT: 3000
     ports:
-      - "${PORT}:${PORT}"
+      - "3000:3000"
     depends_on:
-      - login-db
+      - db
     networks:
-      - rabbitmq-network
+      - backend-network
+  canje:
+    build: ./canje/
+    restart: always
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "canjexpress"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    networks:
+      - backend-network
+  productos_puntos:
+    build: ./productos_puntos/
+    restart: always
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "canjexpress"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+      PORT: 3002
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db
+    networks:
+      - backend-network
 
-  login-db:
+  db:
     image: postgres:16.0-alpine3.18
     restart: always
-    env_file:
-      - ./login/.env
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'canjexpress'
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "5432:5432"
     volumes:
-      - db-canjexpress-login:/var/lib/postgresql
+      - db-canjexpress:/var/lib/postgresql
     networks:
-      - rabbitmq-network
+      - backend-network
 
   extraccion_datos:
     build: ./extraccion_datos/
-    env_file:
-      - ./extraccion_datos/.env
+    environment:
+      TABLE_NAME: "data"
+      DATABASE_HOST: "db"
+      DATABASE_DB: "canjexpress"
+      DATABASE_USER: "user"
+      DATABASE_PASSWORD: "password"
     networks:
-      - rabbitmq-network
-  canje:
-    build: ./backend/canje/
-    env_file:
-      - ./backend/canje/.env
-    networks:
-      - rabbitmq-network
+      - backend-network
+
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
@@ -50,11 +85,23 @@ services:
       RABBITMQ_DEFAULT_USER: "user"
       RABBITMQ_DEFAULT_PASS: "password"
     networks:
-      - rabbitmq-network
+      - backend-network
+
+  nginx:
+    build: ./nginx/
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - backend-network
+    depends_on:
+      - login
+      - canje
+      - productos_puntos
 
 volumes:
-  db-canjexpress-login:
+  db-canjexpress:
   rabbitmq-data:
 
 networks:
-  rabbitmq-network:
+  backend-network:
