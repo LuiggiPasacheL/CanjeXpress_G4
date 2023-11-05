@@ -5,6 +5,8 @@ from application.login_service import LoginService, LoginStatus
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
+from alembic import command
+from alembic.config import Config
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -39,4 +41,10 @@ def login():
             return {"success": False, "message": "NOTFOUND"}, 401
 
 if __name__ == '__main__':
+    try:
+        path = os.path.dirname(os.path.abspath(__file__))
+        alembic_cfg = Config(os.path.join(path, "alembic.ini"))
+        command.upgrade(alembic_cfg, "head")
+    except Exception as e:
+        print(e)
     app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
