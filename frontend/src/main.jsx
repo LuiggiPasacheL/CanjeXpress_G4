@@ -19,7 +19,7 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom"
-import { Home } from './pages/Home.jsx';
+import { Home } from './pages/home/Home.jsx';
 import { Blog } from './pages/Blog.jsx';
 
 const router = createBrowserRouter([
