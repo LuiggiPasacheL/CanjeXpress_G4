@@ -17,6 +17,19 @@ jwt = JWTManager(app)
 
 login_service = LoginService(PostgresUserRepository())
 
+@app.route('/validate/admin', methods=['GET'])
+@jwt_required()
+def validate_admin():
+    current_user = get_jwt()
+    if current_user['is_admin']:
+        response = {
+            'success': True,
+            'message': 'OK',
+            'data': current_user
+        }
+        return jsonify(response), 200
+    else:
+        return {"success": False, "message": "NOTFOUND"}, 401
 
 @app.route('/validate', methods=['GET'])
 @jwt_required()
