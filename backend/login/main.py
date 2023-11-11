@@ -12,7 +12,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'test')
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 172800 # 2 days
 jwt = JWTManager(app)
 
 login_service = LoginService(PostgresUserRepository())
