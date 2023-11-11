@@ -3,6 +3,7 @@ import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from application.getProductUseCase import GetProductUseCase
+from application.getProductsUseCase import GetProductsUseCase
 from infrastructure.adapters.postgresProductsRepository import PostgresProductsRepository
 from infrastructure.database import init_db
 from ariadne import graphql_sync, make_executable_schema, load_schema_from_path
@@ -21,10 +22,21 @@ repository = PostgresProductsRepository()
 def hello_world():
     return 'Hello, World!'
 
+@app.route('/products')
+def getProducts():
+    getProductsUseCase = GetProductsUseCase(repository)
+    products = getProductsUseCase.execute()
+    return jsonify([{
+        'id': product.id,
+        'name': product.name,
+        'pricePoint': product.pricePoint,
+        'quantity': product.quantity
+    } for product in products])
+
 @app.route('/products/<int:id>')
 def get_products(id: int):
-    getProductsUseCase = GetProductUseCase(repository)
-    product = getProductsUseCase.execute(id=id)
+    getProductUseCase = GetProductUseCase(repository)
+    product = getProductUseCase.execute(id=id)
     if product is None:
         return 'Product not found', 404
     return jsonify({
