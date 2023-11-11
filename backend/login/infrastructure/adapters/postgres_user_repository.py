@@ -16,12 +16,11 @@ class PostgresUserRepository(UserRepository):
 
     def get_user_by_username(self, username: str) -> User | None:
         cur = self.conn.cursor()
-        query = "SELECT username, password FROM users WHERE username = %s" # user: user, password: password
+        query = "SELECT id, username, password, points, profile_picture, is_admin FROM users WHERE username = %s"
         cur.execute(query, (username,))
         r = cur.fetchone()
         cur.close()
         if r:
-            return User(r[0],r[1])
+            return User(r[0], r[1], r[2], r[3], r[4], r[5])
         else:
             return None
-    

@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from application.login_service import LoginService, LoginStatus
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
-from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token, get_jwt
 from alembic import command
 from alembic.config import Config
 
@@ -21,8 +21,13 @@ login_service = LoginService(PostgresUserRepository())
 @app.route('/validate', methods=['GET'])
 @jwt_required()
 def index():
-    current_user = get_jwt_identity()
-    return jsonify(username=current_user), 200
+    current_user = get_jwt()
+    response = {
+        'success': True,
+        'message': 'OK',
+        'data': current_user
+    }
+    return jsonify(response), 200
 
 @app.route('/login', methods=['POST'])
 @cross_origin()
@@ -31,9 +36,10 @@ def login():
         req_data = request.get_json()
         username = req_data.get('username')
         password = req_data.get('password')
-        result = login_service.login(username, password)
+        result, dict_user_data = login_service.login(username, password)
         if result == LoginStatus.OK:
-            access_token = create_access_token(identity=username)
+            # create access token by id, username, points, profile_picture, is_admin
+            access_token = create_access_token(identity=username, additional_claims=dict_user_data)
             return {"success": True, "message": "OK",  "access_token": access_token}, 200
         elif result == LoginStatus.BAD_CREDENTIALS:
             return {"success": False, "message": "BADCREDENTIALS"}, 401
