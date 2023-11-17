@@ -12,8 +12,6 @@ services:
       PORT: 3000
     ports:
       - "3000:3000"
-    depends_on:
-      - db
     networks:
       - backend-network
   canje:
@@ -28,8 +26,6 @@ services:
       PORT: 3001
     ports:
       - "3001:3001"
-    depends_on:
-      - db
     networks:
       - backend-network
   productos_puntos:
@@ -44,8 +40,6 @@ services:
       PORT: 3002
     ports:
       - "3002:3002"
-    depends_on:
-      - db
     networks:
       - backend-network
 
