@@ -49,19 +49,20 @@ services:
     networks:
       - backend-network
 
-  db:
-    image: postgres:16.0-alpine3.18
-    restart: always
-    environment:
-      POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'canjexpress'
-    ports:
-      - "5432:5432"
-    volumes:
-      - db-canjexpress:/var/lib/postgresql
-    networks:
-      - backend-network
+  # Add to docker-compose override
+  # db:
+  #   image: postgres:16.0-alpine3.18
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: 'user'
+  #     POSTGRES_PASSWORD: 'password'
+  #     POSTGRES_DB: 'canjexpress'
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - db-canjexpress:/var/lib/postgresql
+  #   networks:
+  #     - backend-network
 
   extraccion_datos:
     build: ./extraccion_datos/
