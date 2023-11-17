@@ -1,4 +1,4 @@
-<button (click)="goBack()" type="button" class="btn btn-link mt-2"> &#8592; Back</button>
+<button (click)="goBack()" type="button" class="btn btn-success mt-2"> &#8592; Back</button>
 <div class="card mt-5">
   <div class="row" *ngIf="product$ | async as product; else loading">
     <div class="col-md-6 border-end">
@@ -25,10 +25,10 @@
           </div>
         </div>
         <div class="d-flex flex-column mt-5">
-          <button class="btn btn-primary p-2">Add to Basket</button>
+          <button class="btn btn-success p-2">Agregar al carrito</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-<ng-template #loading> loading....... </ng-template>
+<ng-template #loading> Cargando... </ng-template>
