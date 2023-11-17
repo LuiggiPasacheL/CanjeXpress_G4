@@ -4,11 +4,11 @@ services:
     build: ./login/
     restart: always
     environment:
-      DB_HOST: "db"
+      DB_HOST: "34.135.17.142"
       DB_PORT: 5432
-      DB_NAME: "canjexpress"
-      DB_USER: "user"
-      DB_PASSWORD: "password"
+      DB_NAME: "usuarios"
+      DB_USER: "postgres"
+      DB_PASSWORD: "PassArquiDB"
       PORT: 3000
     ports:
       - "3000:3000"
@@ -20,11 +20,11 @@ services:
     build: ./canje/
     restart: always
     environment:
-      DB_HOST: "db"
+      DB_HOST: "34.135.17.142"
       DB_PORT: 5432
-      DB_NAME: "canjexpress"
-      DB_USER: "user"
-      DB_PASSWORD: "password"
+      DB_NAME: "canje"
+      DB_USER: "postgres"
+      DB_PASSWORD: "PassArquiDB"
       PORT: 3001
     ports:
       - "3001:3001"
@@ -36,42 +36,16 @@ services:
     build: ./productos_puntos/
     restart: always
     environment:
-      DB_HOST: "db"
+      DB_HOST: "34.135.17.142"
       DB_PORT: 5432
-      DB_NAME: "canjexpress"
-      DB_USER: "user"
-      DB_PASSWORD: "password"
+      DB_NAME: "productos"
+      DB_USER: "postgres"
+      DB_PASSWORD: "PassArquiDB"
       PORT: 3002
     ports:
       - "3002:3002"
     depends_on:
       - db
-    networks:
-      - backend-network
-
-  # Add to docker-compose override
-  # db:
-  #   image: postgres:16.0-alpine3.18
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: 'user'
-  #     POSTGRES_PASSWORD: 'password'
-  #     POSTGRES_DB: 'canjexpress'
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - db-canjexpress:/var/lib/postgresql
-  #   networks:
-  #     - backend-network
-
-  extraccion_datos:
-    build: ./extraccion_datos/
-    environment:
-      TABLE_NAME: "data"
-      DATABASE_HOST: "db"
-      DATABASE_DB: "canjexpress"
-      DATABASE_USER: "user"
-      DATABASE_PASSWORD: "password"
     networks:
       - backend-network
 
@@ -101,7 +75,6 @@ services:
       - productos_puntos
 
 volumes:
-  db-canjexpress:
   rabbitmq-data:
 
 networks:
