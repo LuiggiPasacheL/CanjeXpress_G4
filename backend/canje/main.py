@@ -39,4 +39,4 @@ if __name__ == '__main__':
     consumer_thread = threading.Thread(target=start_consumer)
     consumer_thread.start()
     time.sleep(2)
-    app.run(debug=True, host='0.0.0.0', port=os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))

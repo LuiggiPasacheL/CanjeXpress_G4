@@ -66,4 +66,4 @@ if __name__ == '__main__':
         command.upgrade(alembic_cfg, "head")
     except Exception as e:
         print(e)
-    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
