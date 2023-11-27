@@ -34,7 +34,7 @@ class CanjeService:
             if not product:
                 not_found_products.append(item['product_id'])
                 continue
-            if product.quantity < item['quantity']:
+            if product.stock < item['quantity']:
                 insufficient_stock_products.append(item['product_id'])
             total_points_needed += product.points * item['quantity']
 
