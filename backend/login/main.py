@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from application.login_service import LoginService, LoginStatus
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
-from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token, get_jwt
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
 from alembic import command
 from alembic.config import Config
 
