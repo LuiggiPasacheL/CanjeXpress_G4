@@ -41,9 +41,9 @@ const NavItems = () => {
         <div className="container">
           <div className="header-top-area">
             <Link to="/signup" className="lab-btn me-3">
-              <span>Create Account</span>
+              <span>Registrate</span>
             </Link>
-            <Link to="/login">Log In</Link>
+            <Link to="/login">Iniciar Sesion</Link>
           </div>
         </div>
       </div>
@@ -121,10 +121,10 @@ const NavItems = () => {
                     to="/sign-up"
                     className="lab-btn me-3 d-none d-md-block"
                   >
-                    <span>Create Account</span>
+                    <span>Registrate</span>
                   </Link>
                   <Link to="/login" className="d-none d-md-block">
-                    Log In
+                    Iniciar Sesion
                   </Link>
                 </>
               )}

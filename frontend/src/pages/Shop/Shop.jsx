@@ -97,7 +97,6 @@ const [selectedCategory, setSelectedCategory] = useState("All");
                   selectedCategory={selectedCategory }
                 />
                 <PopularPost/>
-                <Tags />
               </aside>
             </div>
           </div>

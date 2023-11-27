@@ -42,7 +42,7 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/shop";
 
   // login with google
   const handleRegister = () => {
@@ -64,7 +64,7 @@ const Login = () => {
     login(email, password)
       .then((result) => {
         // Signed in
-        const user = result.user;
+        const user = result;
         console.log(user);
         alert("Login successful!");
         navigate(from, { replace: true });
@@ -86,7 +86,7 @@ const Login = () => {
             <form className="account-form" onSubmit={handleLogin}>
               <div className="form-group">
                 <input
-                  type="email"
+                  type=""
                   name="email"
                   placeholder="Email Address *"
                   required
@@ -126,39 +126,6 @@ const Login = () => {
               <span className="d-block cate pt-10">
                 Don’t Have any Account? <Link to="/sign-up">Sign Up</Link>
               </span>
-              <span className="or">
-                <span>or</span>
-              </span>
-
-              {/* social icons */}
-              <h5 className="subtitle">{socialTitle}</h5>
-              <ul className="lab-ul social-icons justify-content-center">
-                <li>
-                  <button onClick={handleRegister} className="github">
-                    <i className="icofont-github"></i>
-                  </button>
-                </li>
-                <li>
-                  <a href="/" className="facebook">
-                    <i className="icofont-facebook"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="/" className="twitter">
-                    <i className="icofont-twitter"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="/" className="linkedin">
-                    <i className="icofont-linkedin"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="/" className="instagram">
-                    <i className="icofont-instagram"></i>
-                  </a>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
