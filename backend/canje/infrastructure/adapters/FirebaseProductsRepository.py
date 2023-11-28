@@ -6,6 +6,8 @@ from application.ports.productsRepository import ProductsRepository
 from domain.product import Product
 from firebase_admin import credentials
 
+from infrastructure.exceptions import ProductNotFound
+
 class FirebaseProductsRepository(ProductsRepository):
 
     def __init__(self):
@@ -43,6 +45,7 @@ class FirebaseProductsRepository(ProductsRepository):
                 products.append(product)
             else:
                 logging.error("Product with id " + product_id + " not found")
+                raise ProductNotFound(product_id)
         return products
 
     def updateProducts(self, products: list[Product]):
