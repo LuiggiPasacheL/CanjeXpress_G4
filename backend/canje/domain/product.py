@@ -12,3 +12,11 @@ class Product:
         self.points = points
         self.stock = stock 
         self.requiredQuantity = requiredQuantity
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "points": self.points,
+            "stock": self.stock,
+            "requiredQuantity": self.requiredQuantity
+        }

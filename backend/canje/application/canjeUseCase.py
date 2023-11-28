@@ -1,6 +1,7 @@
 
 import logging
 from application.ports.productsRepository import ProductsRepository
+from application.ports.userRepository import UserRepository
 from domain.product import Product
 
 from domain.user import User
@@ -8,8 +9,9 @@ from application.exceptions import InsufficientPoints, InsufficientStock
 
 class CanjeUseCase:
 
-    def __init__(self, productsRepository: ProductsRepository):
+    def __init__(self, productsRepository: ProductsRepository, userRepository: UserRepository):
         self.productsRepository = productsRepository
+        self.userRepository = userRepository
 
 
     def canjear(self, user: User, cart: list):
@@ -32,7 +34,8 @@ class CanjeUseCase:
 
         # TODO: If validations are ok, update user points and products stock
             # TODO: Update user points, Message in peka: UserId, reducedPoints, productsIds, productsRequiredQuantity
+        self.userRepository.updateUser(user, products)
         logging.info(f'Usuario {user.id} con {user.points} puntos está canjeando estos productos {products}')
-            # TODO: Update products stock
+            # TODO: Update all products stock
         self.productsRepository.updateProducts(products)
 

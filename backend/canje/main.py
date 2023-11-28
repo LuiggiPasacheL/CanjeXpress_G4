@@ -7,6 +7,7 @@ from infrastructure.adapters.postgres_user_command_repository import PostgresUse
 from infrastructure.adapters.postgres_product_query_repository import PostgresProductQueryRepository
 from infrastructure.adapters.postgres_product_command_repository import PostgresProductCommandRepository
 from infrastructure.adapters.rabbitmq_consumer import consume_message
+from infrastructure.adapters.pikaUserRepository import PikaUserRepository
 from domain.user import User
 from application.canjeUseCase import CanjeUseCase
 from flask_cors import CORS
@@ -27,7 +28,8 @@ product_query_repository = PostgresProductQueryRepository()
 product_command_repository = PostgresProductCommandRepository()
 
 productRepository = FirebaseProductsRepository()
-canjeUseCase = CanjeUseCase(productRepository)
+userRepository = PikaUserRepository()
+canjeUseCase = CanjeUseCase(productRepository, userRepository)
 
 @app.route('/', methods=['GET'])
 def index():
