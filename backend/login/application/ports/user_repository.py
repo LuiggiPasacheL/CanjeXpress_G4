@@ -13,3 +13,7 @@ class UserRepository(ABC):
     @abstractmethod
     def update_product_user(self, user_id: int, product_id: int, required_quantity: int) -> None:
         pass
+
+    @abstractmethod
+    def get_user_by_id(self, id: int) -> User | None:
+        pass

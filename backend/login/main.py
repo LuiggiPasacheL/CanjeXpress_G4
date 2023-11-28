@@ -2,9 +2,10 @@ import os, threading, time
 from flask import Flask, request, jsonify
 from application.login_service import LoginService, LoginStatus
 from application.ports.user_repository import UserRepository
+from application.user_service import UserService
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
+from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required, create_access_token, get_jwt
 from alembic import command
 from alembic.config import Config
 
@@ -19,6 +20,7 @@ jwt = JWTManager(app)
 
 userRepository = PostgresUserRepository()
 login_service = LoginService(userRepository)
+user_service = UserService(userRepository)
 
 @app.route('/validate/admin', methods=['GET'])
 @jwt_required()
@@ -36,7 +38,7 @@ def validate_admin():
 
 @app.route('/validate', methods=['GET'])
 @jwt_required()
-def index():
+def validate():
     current_user = get_jwt()
     response = {
         'success': True,
@@ -44,6 +46,17 @@ def index():
         'data': current_user
     }
     return jsonify(response), 200
+
+@app.route('/user-data', methods=['GET'])
+@jwt_required()
+def get_user_data():
+    current_user = get_jwt()
+    id = current_user['id']
+    user_data = user_service.get_user(id)
+    if user_data is None:
+        return {"success": False, "message": "NOTFOUND"}, 401
+    else:
+        return {"success": True, "message": "OK", "data": user_data}, 200
 
 @app.route('/login', methods=['POST'])
 @cross_origin()
