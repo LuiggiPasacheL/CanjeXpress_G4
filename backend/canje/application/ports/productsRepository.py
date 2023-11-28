@@ -10,3 +10,7 @@ class ProductsRepository(ABC):
     @abstractmethod
     def getProducts(self, productsInfo: list[dict]) -> list[Product]:
         pass
+
+    @abstractmethod
+    def updateProducts(self, products: list[Product]):
+        pass
