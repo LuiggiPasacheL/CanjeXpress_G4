@@ -3,11 +3,11 @@ from domain.exceptions import PointsMustBePositive, StockMustBePositive, Require
 class Product:
     def __init__(self, id: int, points: int, stock: int, requiredQuantity: int):
         if points < 0:
-            raise PointsMustBePositive()
+            raise PointsMustBePositive(id, "product")
         if stock < 0:
-            raise StockMustBePositive()
+            raise StockMustBePositive(id, "product")
         if requiredQuantity < 0:
-            raise RequiredQuantityMustBePositive()
+            raise RequiredQuantityMustBePositive(id, "product")
         self.id = id
         self.points = points
         self.stock = stock 
