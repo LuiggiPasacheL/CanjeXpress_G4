@@ -1,8 +1,6 @@
 import os,logging
 import threading,time
 from flask import Flask, request, jsonify
-from application.canje_service import CanjeService
-from application.ports.productsRepository import ProductsRepository
 from infrastructure.adapters.FirebaseProductsRepository import FirebaseProductsRepository
 from infrastructure.adapters.postgres_user_query_repository import PostgresUserQueryRepository
 from infrastructure.adapters.postgres_user_command_repository import PostgresUserCommandRepository
@@ -12,7 +10,7 @@ from infrastructure.adapters.rabbitmq_consumer import consume_message
 from domain.user import User
 from application.canjeUseCase import CanjeUseCase
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pika").setLevel(logging.WARNING) 
 
@@ -51,7 +49,11 @@ def canjear():
     if user is None:
         return jsonify({"msg": "Invalid token"}), 401
 
-    canjeUseCase.canjear(user, cart)
+    try:
+        canjeUseCase.canjear(user, cart)
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 400
+
     return jsonify({"msg": "Canje realizado con exito"}), 200
 
 def start_consumer():
