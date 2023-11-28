@@ -1,5 +1,6 @@
 import os,logging
 import threading,time
+import requests
 from flask import Flask, request, jsonify
 from infrastructure.adapters.FirebaseProductsRepository import FirebaseProductsRepository
 from infrastructure.adapters.postgres_user_query_repository import PostgresUserQueryRepository
@@ -11,7 +12,7 @@ from infrastructure.adapters.pikaUserRepository import PikaUserRepository
 from domain.user import User
 from application.canjeUseCase import CanjeUseCase
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, get_jwt
+from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required, get_jwt
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pika").setLevel(logging.WARNING) 
 
@@ -38,12 +39,21 @@ def index():
 @app.route('/canjear', methods=['POST'])
 @jwt_required()
 def canjear():
-    active_user_data = get_jwt()
     user = None
     try:
+        token = request.headers.get('Authorization')
+        response = requests.get('http://login:3000/user-data', headers={'Authorization': str(token)})
+        if response.status_code != 200:
+            return jsonify({"msg": "no da status code 200"}), 401
+
+        response_request = response.json()
+        if response_request["data"] is None:
+            return jsonify({"msg": "data no existe"}), 401
+        active_user_data = response_request["data"]
+
         user = User(active_user_data["id"], active_user_data["points"])
-    except:
-        return jsonify({"msg": "Invalid token"}), 401
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 401
 
     req_data = request.get_json()
     cart = req_data.get('cart') # Array of indexes of products to buy
