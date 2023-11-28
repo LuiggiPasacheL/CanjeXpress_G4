@@ -1,12 +1,14 @@
-import os
-
+import os, threading, time
 from flask import Flask, request, jsonify
 from application.login_service import LoginService, LoginStatus
+from application.ports.user_repository import UserRepository
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
 from alembic import command
 from alembic.config import Config
+
+from infrastructure.canje_ms_consumer import consume_message
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -15,7 +17,8 @@ app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'test')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 172800 # 2 days
 jwt = JWTManager(app)
 
-login_service = LoginService(PostgresUserRepository())
+userRepository = PostgresUserRepository()
+login_service = LoginService(userRepository)
 
 @app.route('/validate/admin', methods=['GET'])
 @jwt_required()
@@ -59,11 +62,20 @@ def login():
         else:
             return {"success": False, "message": "NOTFOUND"}, 401
 
+def start_consumer(userRepository: UserRepository):
+    consume_message(userRepository)
+
 if __name__ == '__main__':
+    time.sleep(5)
+
     try:
         path = os.path.dirname(os.path.abspath(__file__))
         alembic_cfg = Config(os.path.join(path, "alembic.ini"))
         command.upgrade(alembic_cfg, "head")
     except Exception as e:
         print(e)
+
+    consumer_thread = threading.Thread(target=start_consumer, args=(userRepository,))
+    consumer_thread.start()
+
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
