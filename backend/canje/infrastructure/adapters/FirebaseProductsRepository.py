@@ -44,3 +44,14 @@ class FirebaseProductsRepository(ProductsRepository):
             else:
                 logging.error("Product with id " + product_id + " not found")
         return products
+
+    def updateProducts(self, products: list[Product]):
+        """
+          Update products method receives a list of Product objects and updates the stock of each product in the database
+        """
+        products_ref = self.db.collection(u'productos')
+        for product in products:
+            product_id = product.id
+            stock = product.stock - product.requiredQuantity
+            products_ref.document(str(product_id)).update({"quantity": stock})
+        logging.info("Products updated successfully")
