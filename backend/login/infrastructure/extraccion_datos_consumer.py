@@ -17,7 +17,6 @@ def register_user(ch, method, properties, body, userRepository: UserRepository):
 
         userRepository.bulk_create_users(users_data)
 
-    logging.info(f'Users registered successfully')
 
 def consume_extraccion_datos_message(userRepository: UserRepository):
     time.sleep(5)
