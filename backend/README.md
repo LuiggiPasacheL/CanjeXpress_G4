@@ -1,5 +1,10 @@
 
 # Production
+```sh
+sudo docker compose -f docker-compose.production.yaml up -d --build
 ```
-sudo docker-compose -f docker-compose.production.yaml -d --build
+
+# Local
+```sh
+sudo docker compose up -d --build
 ```
