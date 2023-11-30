@@ -5,7 +5,7 @@ from application.ports.user_repository import UserRepository
 from application.user_service import UserService
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
-from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required, create_access_token, get_jwt
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt, unset_jwt_cookies
 from alembic import command
 from alembic.config import Config
 
@@ -74,6 +74,13 @@ def login():
             return {"success": False, "message": "BADCREDENTIALS"}, 401
         else:
             return {"success": False, "message": "NOTFOUND"}, 401
+
+@app.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    resp = jsonify({"success": True, "message": "OK"})
+    unset_jwt_cookies(resp)
+    return resp, 200
 
 def start_consumer(userRepository: UserRepository):
     consume_message(userRepository)
