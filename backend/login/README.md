@@ -1,33 +1,28 @@
 
-# CanjeXpress Login
+# Microservicio de Login
 
-## Prerequisites
+## Prerequisitos
 - Postgresql 14.9+
 - Python 3.10.12+
 - Pip 22.0.2+
 
-## Run
+## Ejecutar
 
-- Install with pip
+- Instalar librerías.
 ```sh
 pip install -r requirements.txt
 ```
-- Set envoriment variables as .env.example file
+- Establecer las variables de entorno como están en el archivo `.env.example`.
 ```sh
 export DATABASE_HOST=localhost #e.g.
 ```
 
-- Run
+- Ejecutar
 ```sh
 python main.py
 ```
 
 ## Run with docker
-
-- Build
-```sh
-docker build -t canjexpress_login .
-```
 
 - Create .env file
 ```sh
@@ -37,7 +32,7 @@ Modify the generated .env file according your credentials
 
 - Run
 ```sh
-docker run --env-file .env --network host canjexpress_login
+docker compose run -d --build
 ```
 
 ## Routes
