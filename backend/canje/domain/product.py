@@ -1,8 +1,22 @@
+from domain.exceptions import PointsMustBePositive, StockMustBePositive, RequiredQuantityMustBePositive
+
 class Product:
-    def __init__(self, id: int, name: str, points: int, description: str, image_url: str, quantity: int):
+    def __init__(self, id: int, points: int, stock: int, requiredQuantity: int):
+        if points < 0:
+            raise PointsMustBePositive(id, "product")
+        if stock < 0:
+            raise StockMustBePositive(id, "product")
+        if requiredQuantity < 0:
+            raise RequiredQuantityMustBePositive(id, "product")
         self.id = id
-        self.name = name
         self.points = points
-        self.description = description
-        self.image_url = image_url
-        self.quantity = quantity 
+        self.stock = stock 
+        self.requiredQuantity = requiredQuantity
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "points": self.points,
+            "stock": self.stock,
+            "requiredQuantity": self.requiredQuantity
+        }

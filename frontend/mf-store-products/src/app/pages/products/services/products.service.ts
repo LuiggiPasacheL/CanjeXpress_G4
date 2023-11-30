@@ -37,7 +37,11 @@ export class ProductsService {
   }
 
   public getProductById(id: number): Observable<Product> {
-    const productFound = this.products.find((product) => product.id === +id);
+    // const productFound = this.products.find((product) => product.id === id);
+    const productFound = this.products.find((product) => console.log(`____PRODUCT ID: [${product.id}]`));
+    console.log(`____ID: [${id}]`);
+    
+
     return productFound ? of(productFound) : empty();
   }
 
@@ -53,6 +57,7 @@ export class ProductsService {
           querySnapshot.forEach((doc) => {
             const data = doc.data() as Product;
             firestoreProducts.push(data);
+            this.products.push(data);
           });
 
           observer.next(firestoreProducts);

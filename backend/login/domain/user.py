@@ -8,4 +8,3 @@ class User:
     points: int
     profile_picture: str
     is_admin: bool
-
