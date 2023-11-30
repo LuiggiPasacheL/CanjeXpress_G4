@@ -1,7 +1,6 @@
 import os, threading, time
 from flask import Flask, request, jsonify
 from application.login_service import LoginService, LoginStatus
-from application.ports.user_repository import UserRepository
 from application.user_service import UserService
 from infrastructure.adapters.postgres_user_repository import PostgresUserRepository
 from flask_cors import CORS, cross_origin
@@ -9,7 +8,8 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from alembic import command
 from alembic.config import Config
 
-from infrastructure.canje_ms_consumer import consume_message
+from infrastructure.canje_ms_consumer import consume_canje_message
+from infrastructure.extraccion_datos_consumer import consume_extraccion_datos_message
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -82,9 +82,6 @@ def logout():
     unset_jwt_cookies(resp)
     return resp, 200
 
-def start_consumer(userRepository: UserRepository):
-    consume_message(userRepository)
-
 if __name__ == '__main__':
     time.sleep(5)
 
@@ -95,7 +92,10 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
 
-    consumer_thread = threading.Thread(target=start_consumer, args=(userRepository,))
-    consumer_thread.start()
+    canje_consumer_thread = threading.Thread(target=consume_canje_message, args=(userRepository,))
+    canje_consumer_thread.start()
+
+    extraccion_datos_consumer_thread = threading.Thread(target=consume_extraccion_datos_message, args=(userRepository,))
+    extraccion_datos_consumer_thread.start()
 
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))

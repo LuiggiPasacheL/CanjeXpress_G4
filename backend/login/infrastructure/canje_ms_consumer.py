@@ -31,7 +31,7 @@ def update_user_points(ch, method, properties, body, userRepository: UserReposit
     for product in products:
         userRepository.update_product_user(user_id, product['id'], product['requiredQuantity'])
 
-def consume_message(userRepository: UserRepository):
+def consume_canje_message(userRepository: UserRepository):
     time.sleep(5)
     credentials = pika.PlainCredentials(username='user', password='password')
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', credentials=credentials))   

@@ -17,3 +17,7 @@ class UserRepository(ABC):
     @abstractmethod
     def get_user_by_id(self, id: int) -> User | None:
         pass
+
+    @abstractmethod
+    def bulk_create_users(self, users: list[dict]) -> None:
+        pass

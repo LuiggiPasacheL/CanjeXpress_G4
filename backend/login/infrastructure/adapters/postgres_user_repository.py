@@ -1,5 +1,6 @@
 import psycopg2
 import os
+import logging
 
 from application.ports.user_repository import UserRepository
 from domain.user import User
@@ -45,3 +46,17 @@ class PostgresUserRepository(UserRepository):
             return User(r[0], r[1], r[2], r[3], r[4], r[5])
         else:
             return None
+
+    def bulk_create_users(self, users_data: list[dict]) -> None:
+        query = """
+                    INSERT INTO users (username, password, points, profile_picture, is_admin)
+                    VALUES (%(username)s, %(password)s, %(points)s, %(profile_picture)s, %(is_admin)s)
+                """
+        cur = self.conn.cursor()
+        try:
+            cur.executemany(query, users_data)
+            self.conn.commit()
+            logging.info(f"Usuarios insertados exitosamente.")
+        except Exception as e:
+            self.conn.rollback()
+            logging.error(f"Error al insertar datos: {e}")
