@@ -32,7 +32,7 @@ Modify the generated .env file according your credentials
 
 - Run
 ```sh
-docker compose run -d --build
+docker compose up -d --build
 ```
 
 ## Routes
