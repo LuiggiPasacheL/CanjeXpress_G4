@@ -24,3 +24,24 @@ class PostgresUserRepository(UserRepository):
             return User(r[0], r[1], r[2], r[3], r[4], r[5])
         else:
             return None
+
+    def update_user_points(self, user_id: int, points: int) -> None:
+        cur = self.conn.cursor()
+        query = "UPDATE users SET points = %s WHERE id = %s"
+        cur.execute(query, (points, user_id))
+        self.conn.commit()
+        cur.close()
+
+    def update_product_user(self, user_id: int, product_id: int, required_quantity: int) -> None:
+        print(f'Updating {required_quantity} product {product_id} for user {user_id}')
+
+    def get_user_by_id(self, id: int) -> User | None:
+        cur = self.conn.cursor()
+        query = "SELECT id, username, password, points, profile_picture, is_admin FROM users WHERE id = %s"
+        cur.execute(query, (id,))
+        r = cur.fetchone()
+        cur.close()
+        if r:
+            return User(r[0], r[1], r[2], r[3], r[4], r[5])
+        else:
+            return None
