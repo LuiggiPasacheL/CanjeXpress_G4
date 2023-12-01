@@ -62,7 +62,7 @@ services:
     depends_on:
       - login
       - canje
-      - productos_puntos
+      - extraccion_datos
 
 volumes:
   rabbitmq-data:
