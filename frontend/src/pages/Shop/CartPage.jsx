@@ -15,7 +15,7 @@ const CartPage = () => {
 
   // Calculate the total price for each item in the cart
   const calculateTotalPrice = (item) => {
-    return item.price * item.quantity;
+    return item.points * item.quantity;
   };
 
   // Handle quantity increase
@@ -62,7 +62,6 @@ const CartPage = () => {
 
   return (
     <div>
-      <PageHeader title={"Shop Cart"} curPage={"Cart Page"} />
       <div className="shop-cart padding-tb">
         <div className="container">
           <div className="section-wrapper">
@@ -84,14 +83,14 @@ const CartPage = () => {
                       <td className="product-item cat-product">
                         <div className="p-thumb">
                           <Link to="/shop-single">
-                            <img src={`${item.img}`} alt="" />
+                            <img src={`${item.image}`} alt="" />
                           </Link>
                         </div>
                         <div className="p-content">
                           <Link to="/shop-single">{item.name}</Link>
                         </div>
                       </td>
-                      <td className="cat-price">${item.price}</td>
+                      <td className="cat-price">${item.points}</td>
                       <td className="cat-quantity">
                         <div className="cart-plus-minus">
                           <div

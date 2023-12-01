@@ -1,21 +1,33 @@
 import React, { useEffect } from "react";
-import PageHeader from "../../components/PageHeader";
 import { Component, Fragment, useState } from "react";
-import Search from "./Search";
 import Pagination from "./Pagination";
-import ShopCategory from "./ShopCategory";
-import PopularPost from "./PopularPost";
-import Tags from "./Tags";
 import ProductCards from "./ProductCards";
 const showResult = "Showing 01 - 12 of 139 Results";
 import Data from "/src/products.json"
 
-const Shop = () => {
-  const [GridList, setGridList] = useState(true);
-  const [products, setProducts] = useState(Data);
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-  //   category active colors
-const [selectedCategory, setSelectedCategory] = useState("All");
+const Shop = () => {
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBs_9dsYiDN16wGw8Tm3EwqperjpUxY--M",
+    authDomain: "g5-arquitectura.firebaseapp.com",
+    projectId: "g5-arquitectura",
+    storageBucket: "g5-arquitectura.appspot.com",
+    messagingSenderId: "734139387824",
+    appId: "1:734139387824:web:7dba57e18a3447f24ad075",
+    measurementId: "G-707LK21PSY"
+  };
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+  const [GridList, setGridList] = useState(true);
+  const [products, setProducts] = useState([]);
 
   // pagination
   // Get current products to display
@@ -24,37 +36,38 @@ const [selectedCategory, setSelectedCategory] = useState("All");
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const currentProducts = products.slice(indexOfFirstProduct,indexOfLastProduct);
 
   // Function to change the current page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  // category based filtering
-  const menuItems = [...new Set(Data.map((Val) => Val.category))];
+  useEffect(() => {
+    // Fetch products from Firestore when the component mounts
+    const fetchFirestoreProducts = async () => {
+      try {
+        const db = getFirestore(app);
+        const productosRef = collection(db, 'productos');
+        const querySnapshot = await getDocs(productosRef);
 
-  const filterItem = (curcat) => {
-    const newItem = Data.filter((newVal) => {
-      return newVal.category === curcat;
-    });
-    setSelectedCategory(curcat); 
-    setProducts(newItem);
-    // console.log(selectedCategory)
-  };
+        const firestoreProducts = querySnapshot.docs.map((doc) => doc.data());
+        setProducts(firestoreProducts);
+      } catch (error) {
+        console.error('Error fetching Firestore products:', error);
+      }
+    };
+
+    fetchFirestoreProducts();
+  }, [app]);
 
   return (
     <div>
-      <PageHeader title={"Our Shop Pages"} curPage={"Shop"} />
-
       {/* shop page */}
       <div className="shop-page padding-tb">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-8 col-12">
+            <div className="col-lg-12 col-12">
               <article>
                 <div className="shop-title d-flex flex-wrap justify-content-between">
                   <p>{showResult}</p>
@@ -86,18 +99,6 @@ const [selectedCategory, setSelectedCategory] = useState("All");
               </article>
             </div>
             <div className="col-lg-4 col-12">
-              <aside>
-                <Search products={products} GridList={GridList} />
-                {/* <ShopCategory /> */}
-                <ShopCategory
-                  filterItem={filterItem}
-                  setItem={setProducts}
-                  menuItems={menuItems}
-                  setProducts={setProducts}
-                  selectedCategory={selectedCategory }
-                />
-                <PopularPost/>
-              </aside>
             </div>
           </div>
         </div>

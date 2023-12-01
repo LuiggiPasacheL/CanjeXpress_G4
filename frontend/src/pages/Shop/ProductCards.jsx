@@ -16,7 +16,7 @@ const ProductCards = ({ products, GridList }) => {
           <div className="product-item">
             <div className="product-thumb">
               <div className="pro-thumb">
-                <img src={`${product.img}`} alt={`${product.img}`} />
+                <img src={`${product.image}`} alt={`${product.image}`} />
               </div>
               <div className="product-action-link">
                 <Link to={`/shop/${product.id}`}>
@@ -37,7 +37,7 @@ const ProductCards = ({ products, GridList }) => {
               <p className="productRating">
                 <Rating />
               </p>
-              <h6>${product.price}</h6>
+              <h6>Costo en putos: {product.points}</h6>
             </div>
           </div>
           <div className="product-list-item">
