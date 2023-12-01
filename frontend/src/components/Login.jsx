@@ -42,7 +42,7 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/shop";
+  const from = location.state?.from?.pathname || "/";
 
   // login with google
   const handleRegister = () => {

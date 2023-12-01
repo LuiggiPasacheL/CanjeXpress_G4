@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState,useEffect  } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/images/logo/logo.png";
 import { AuthContext } from "../contexts/AuthProvider";
@@ -8,27 +8,23 @@ const NavItems = () => {
   const [menuToggle, setMenuToggle] = useState(false);
   const [socialToggle, setSocialToggle] = useState(false);
   const [headerFiexd, setHeaderFiexd] = useState(false);
+  const [user, setUser] = useState({});
 
   // check if user is register
-  const { user, logOut } = useContext(AuthContext);
+  const { user_data, logOut,authenticated } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    logOut()
-      .then(() => {
-        // Sign-out successful.
+  useEffect(() => {
+    // Llamar a user_data aquí para evitar el Warning de setState durante la renderización.
+    user_data()
+      .then(result => {
+        setUser(result);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(error => {
+        console.error('Error capturing user data:', error);
       });
-  };
+  }, [authenticated]); // Se ejecuta solo una vez al montar el component
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 200) {
-      setHeaderFiexd(true);
-    } else {
-      setHeaderFiexd(false);
-    }
-  });
+  console.log(user)
 
   return (
     <header
@@ -68,20 +64,7 @@ const NavItems = () => {
               <div className="menu">
                 <ul className={`lab-ul ${menuToggle ? "active" : ""}`}>
                   <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="shop">Shop</Link>
-                  </li>
-                  <li>
-                    <Link to="/blog">Blog</Link>
-                  </li>
-                  <li>
-                    {" "}
-                    <NavLink to="/about">About</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/contact">Contact</NavLink>
+                    <Link to="/cart-page">Carrito</Link>
                   </li>
                 </ul>
               </div>
@@ -102,7 +85,7 @@ const NavItems = () => {
                     )}
                   </div>
                   <NavDropdown id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1" onClick={handleLogout}>
+                    <NavDropdown.Item href="#action/3.1" onClick={logOut}>
                       Logout
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/cart-page">
