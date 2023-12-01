@@ -15,6 +15,12 @@ sudo docker compose up -d --build
 
 ## **1. Login**
 - A las rutas descritas en el microservicio [login](https://github.com/LuiggiPasacheL/CanjeXpress_G4/tree/master/backend/login) agregar el prefijo `/login`
+- Ejemplo:
+`POST http://localhost/login/login` para login
+`GET http://localhost/login/validate` para validar usuario
 
 ## **2. Canje**
 - A las rutas descritas en el microservicio [canje](https://github.com/LuiggiPasacheL/CanjeXpress_G4/tree/master/backend/canje) agregar el prefijo `/canje`
+- Ejemplo:
+`POST http://localhost/canje/canjear` para canjear
+`GET http://localhost/canje/` ruta de prueba
