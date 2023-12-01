@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import delImgUrl from "../../assets/images/shop/del.png";
 import CheckoutPage from "./CheckoutPage";
 
+import Button from "react-bootstrap/Button";
+
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
 
@@ -59,6 +61,45 @@ const CartPage = () => {
 
   // Calculate the order total
   const orderTotal = cartSubtotal;
+
+
+  const handleRedeem = async (event) => {
+    event.preventDefault();
+    // Encabezados de la solicitud
+    const accessToken = localStorage.getItem('access_token');
+  
+    const headersList = {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    };
+  
+    // Construye el objeto de carrito formateado
+    const formattedCart = {
+      cart: cartItems.map(item => ({
+        product_id: item.id, // Asumiendo que el id del producto está en item.id
+        quantity: item.quantity,
+      })),
+    };
+  
+    const bodyContent = JSON.stringify(formattedCart);
+  
+    try {
+      // Realiza la solicitud POST a la API
+      console.log(bodyContent,
+        headersList)
+      const response = await fetch("http://34.125.166.120/api/canje/canjear", {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList,
+      });
+      const data = await response.text();
+      console.log(data);
+    } catch (error) {
+      console.error('Error redeeming:', error.message);
+      // Puedes manejar errores de red u otros aquí
+    }
+  };
+  
 
   return (
     <div>
@@ -130,30 +171,13 @@ const CartPage = () => {
             {/* cart bottom */}
             <div className="cart-bottom">
               {/* checkout box */}
-              <div className="cart-checkout-box">
-                <form className="coupon" action="/">
-                  <input
-                    type="text"
-                    name="coupon"
-                    placeholder="Coupon Code..."
-                    className="cart-page-input-text"
-                  />
-                  <input type="submit" value="Apply Coupon" />
-                </form>
-                <form className="cart-checkout" action="/">
-                  <input type="submit" value="Update Cart" />
-                  {/* <Link to="/check-out"><input type="submit" value="Proceed to Checkout" /></Link> */}
-                  <div>
-                    <CheckoutPage />
-                  </div>
-                </form>
-              </div>
+
 
               {/* shopping box */}
               <div className="shiping-box">
                 <div className="row">
                   {/* shipping  */}
-                  <div className="col-md-6 col-12">
+                  {/* <div className="col-md-6 col-12">
                     <div className="calculate-shiping">
                       <h3>Calculate Shipping</h3>
                       <div className="outline-select">
@@ -188,10 +212,10 @@ const CartPage = () => {
                       />
                       <button type="submit">Update Total</button>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* cart total */}
-                  <div className="col-md-6 col-12">
+                  <div className="col-md-12 col-12">
                     <div className="cart-overview">
                       <h3>Cart Totals</h3>
                       <ul className="lab-ul">
@@ -215,6 +239,11 @@ const CartPage = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="cart-checkout-box">
+              <Button variant="primary" onClick={handleRedeem} className="py-2">
+                Proceed to Checkout
+              </Button>
               </div>
             </div>
           </div>
