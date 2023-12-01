@@ -28,18 +28,14 @@ services:
       - "3001:3001"
     networks:
       - backend-network
-  productos_puntos:
-    build: ./productos_puntos/
-    restart: always
+  extraccion_datos:
+    build: ./extraccion_datos/
     environment:
-      DB_HOST: "34.135.17.142"
-      DB_PORT: 5432
-      DB_NAME: "productos"
-      DB_USER: "postgres"
-      DB_PASSWORD: "PassArquiDB"
-      PORT: 3002
-    ports:
-      - "3002:3002"
+      TABLE_NAME: "data"
+      DATABASE_HOST: "database"
+      DATABASE_DB: "canjexpress"
+      DATABASE_USER: "user"
+      DATABASE_PASSWORD: "password"
     networks:
       - backend-network
 
