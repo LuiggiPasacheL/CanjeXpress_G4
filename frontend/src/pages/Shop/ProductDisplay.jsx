@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 //const desc =  "Energistia an deliver atactica metrcs after avsionary Apropria trnsition enterpris an sources applications emerging 	psd template.";
 
 const ProductDisplay = ({ item }) => {
-  const { category,description,id,image,name,points,quantity, urlPicture } = item;
-  const [prequantity, setQuantity] = useState(quantity);
+  const { category,description,id,image,name,points, urlPicture } = item;
+  const [prequantity, setQuantity] = useState(0);
   const [coupon, setCoupon] = useState("");
   const [size, setSize] = useState("Select Size");
   const [color, setColor] = useState("Select Color");
@@ -39,7 +39,7 @@ const ProductDisplay = ({ item }) => {
       image: image,
       name: name,
       points: points,
-      quantity: quantity,
+      quantity: prequantity,
       urlPicture: urlPicture,
     };
 
@@ -81,7 +81,7 @@ const ProductDisplay = ({ item }) => {
           <i className="icofont-star"></i>
           (3 review)
         </p>
-        <h4>${points}</h4>
+        <h4>Puntos: {points}</h4>
         <p>{description}</p>
       </div>
       {/* Single Product Cart Component here */}
