@@ -15,4 +15,4 @@ def create_campaign():
     return jsonify({'status': 'success', 'data': campaign_data}), 201
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
