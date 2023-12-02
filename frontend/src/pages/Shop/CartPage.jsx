@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../../components/PageHeader";
-import { Link } from "react-router-dom";
+import { Link,useLocation, useNavigate } from "react-router-dom";
 import delImgUrl from "../../assets/images/shop/del.png";
 import CheckoutPage from "./CheckoutPage";
 
@@ -8,7 +8,10 @@ import Button from "react-bootstrap/Button";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const from = location.state?.from?.pathname || "/";
   useEffect(() => {
     // Fetch cart items from local storage
     const storedCartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -85,21 +88,33 @@ const CartPage = () => {
   
     try {
       // Realiza la solicitud POST a la API
-      console.log(bodyContent,
-        headersList)
-      const response = await fetch("http://34.125.166.120/api/canje/canjear", {
+      const response = await fetch("http://34.125.103.185/api/canje/canjear", {
         method: "POST",
         body: bodyContent,
         headers: headersList,
       });
-      const data = await response.text();
-      console.log(data);
+  
+      const data = await response.json(); // Assuming the response is in JSON format
+  
+      // Check if the redemption was successful
+      if (response.ok) {
+        // Show alert with success message
+        alert(data.msg);
+  
+        // Clear the 'cart' item from localStorage
+        localStorage.removeItem('cart');
+  
+        // Redirect to the homepage
+        navigate(from, { replace: true });
+      } else {
+        // Handle other scenarios (e.g., non-200 status code)
+        console.error('Redemption failed:', data.msg);
+      }
     } catch (error) {
       console.error('Error redeeming:', error.message);
       // Puedes manejar errores de red u otros aquí
     }
   };
-  
 
   return (
     <div>

@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 
-const title = "Login";
+const title = "CanjeXpress - Inicio de Sesion";
 const socialTitle = "Login With Social Media";
-const btnText = "Submit Now";
+const btnText = "Ingresar";
 
 const socialList = [
   {
@@ -88,7 +88,7 @@ const Login = () => {
                 <input
                   type=""
                   name="email"
-                  placeholder="Email Address *"
+                  placeholder="Nombre de usuario *"
                   required
                 />
               </div>
@@ -96,7 +96,7 @@ const Login = () => {
                 <input
                   type="password"
                   name="password"
-                  placeholder="Password *"
+                  placeholder="Contraseña *"
                 />
               </div>
               {/* showing error message */}
@@ -109,11 +109,11 @@ const Login = () => {
               </div>
               <div className="form-group">
                 <div className="d-flex justify-content-between flex-wrap pt-sm-2">
-                  <div className="checkgroup">
+                  {/* <div className="checkgroup">
                     <input type="checkbox" name="remember" id="remember" />
                     <label htmlFor="remember">Remember Me</label>
                   </div>
-                  <Link to="/forgetpass">Forget Password?</Link>
+                  <Link to="/forgetpass">Forget Password?</Link> */}
                 </div>
               </div>
               <div className="form-group text-center">
@@ -123,9 +123,9 @@ const Login = () => {
               </div>
             </form>
             <div className="account-bottom">
-              <span className="d-block cate pt-10">
+              {/* <span className="d-block cate pt-10">
                 Don’t Have any Account? <Link to="/sign-up">Sign Up</Link>
-              </span>
+              </span> */}
             </div>
           </div>
         </div>

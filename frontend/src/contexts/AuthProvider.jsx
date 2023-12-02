@@ -8,8 +8,8 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
-  const loginApiUrl = 'http://34.125.166.120/api/login/login'
-  const userDataApiUrl = 'http://34.125.166.120/api/login/user-data'
+  const loginApiUrl = 'http://34.125.103.185/api/login/login'
+  const userDataApiUrl = 'http://34.125.103.185/api/login/user-data'
   
   const login = (email, password) => {
     setLoading(true);

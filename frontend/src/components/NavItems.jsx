@@ -62,11 +62,11 @@ const NavItems = () => {
             {/* menu area */}
             <div className="menu-area">
               <div className="menu">
-                <ul className={`lab-ul ${menuToggle ? "active" : ""}`}>
+                {/* <ul className={`lab-ul ${menuToggle ? "active" : ""}`}>
                   <li>
                     <Link to="/cart-page">Carrito</Link>
                   </li>
-                </ul>
+                </ul> */}
               </div>
 
               {/* users when user available */}

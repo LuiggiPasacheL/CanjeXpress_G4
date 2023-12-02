@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Component, Fragment, useState } from "react";
 import Pagination from "./Pagination";
 import ProductCards from "./ProductCards";
-const showResult = "Showing 01 - 12 of 139 Results";
+const showResult = "Mostrando productos...";
 import Data from "/src/products.json"
 
 // Import the functions you need from the SDKs you need
