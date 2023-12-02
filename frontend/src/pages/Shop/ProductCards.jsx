@@ -37,8 +37,13 @@ const ProductCards = ({ products, GridList }) => {
               <p className="productRating">
                 <Rating />
               </p>
-              <h6>Costo en putos: {product.points}</h6>
-            </div>
+              {}
+    {product.descuento ? (
+      <h6>Costo con descuento ({product.descuento}%): {Math.round(product.points* (1 - (product.descuento/100)),2)} puntos</h6>
+    ) : (
+      <h6>Costo en puntos: {product.points}</h6>
+    )}
+  </div>
           </div>
           <div className="product-list-item">
             <div className="product-thumb">
