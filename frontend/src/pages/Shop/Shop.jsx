@@ -43,23 +43,55 @@ const Shop = () => {
     setCurrentPage(pageNumber);
   };
 
-  useEffect(() => {
-    // Fetch products from Firestore when the component mounts
-    const fetchFirestoreProducts = async () => {
+  useEffect(() => {       
+    // Fetch products and campaigns from Firestore when the component mounts
+    const fetchData = async () => {
       try {
         const db = getFirestore(app);
         const productosRef = collection(db, 'productos');
-        const querySnapshot = await getDocs(productosRef);
+        const campanasRef = collection(db, 'campañas');
+        const productosSnapshot = await getDocs(productosRef);
+        const campanasSnapshot = await getDocs(campanasRef);
+        const fechaActual = new Date();
+  
+        const campanasMap = campanasSnapshot.docs.reduce((acc, doc) => {
+          const data = doc.data();
+          acc[data.id] = data;
+          return acc;
+        }, {});
+  
+        const firestoreProducts = productosSnapshot.docs.map((doc) => {
+          const producto = doc.data();
+          const campana = campanasMap[producto.campana_id];
+          
+          if (campana) {
+            const fechaFinCampana = new Date(campana.end_date);
+            console.log("HAY CAMPANIA")
+            if (fechaFinCampana > fechaActual) {
+              console.log("SI ES VIGENTE")
 
-        const firestoreProducts = querySnapshot.docs.map((doc) => doc.data());
+              return {
+                ...producto,
+                descuento: campana.discount,
+                fecha_inicio: campana.start_date,
+                fecha_fin: campana.end_date,
+              };
+            }
+          }
+          console.log("NO VIGENTE")
+          return producto;
+        });
+  
         setProducts(firestoreProducts);
       } catch (error) {
-        console.error('Error fetching Firestore products:', error);
+        console.error('Error fetching Firestore data:', error);
       }
     };
-
-    fetchFirestoreProducts();
+  
+    fetchData();
   }, [app]);
+  
+  
 
   return (
     <div>

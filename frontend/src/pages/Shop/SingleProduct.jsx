@@ -42,16 +42,39 @@ const SingleProduct = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const db = getFirestore(app);
-      const productosRef = collection(db, 'productos');
-      const querySnapshot = await getDocs(productosRef);
-      const firestoreProducts = querySnapshot.docs.map((doc) => doc.data());
-      const productFilter = firestoreProducts.filter((product) => product.id === parseInt(id));
-      console.log(productFilter)
-      setProduct(productFilter);
+      try {
+        const productosRef = collection(db, 'productos');
+        const campanasRef = collection(db, 'campañas');
+  
+        const queryProducto = query(productosRef, where("id", "==", parseInt(id)));
+        const productoSnapshot = await getDocs(queryProducto);
+  
+        if (!productoSnapshot.empty) {
+          const productoData = productoSnapshot.docs[0].data();
+          
+          const queryCampana = query(campanasRef, where("id", "==", productoData.campana_id));
+          const campanaSnapshot = await getDocs(queryCampana);
+          
+          let productoConDescuento = { ...productoData, descuento: null };
+  
+          if (!campanaSnapshot.empty) {
+            const campanaData = campanaSnapshot.docs[0].data();
+            const fechaActual = new Date();
+            const fechaFinCampana = new Date(campanaData.end_date);
+  
+            if (fechaFinCampana > fechaActual) {
+              productoConDescuento.descuento = campanaData.discount;
+            }
+          }
+          setProduct([productoConDescuento]);
+        }
+      } catch (error) {
+        console.error('Error fetching Firestore data:', error);
+      }
     };
+  
     fetchData();
-  }, [id, db]);
+  }, [id]);
 
   return (
     
