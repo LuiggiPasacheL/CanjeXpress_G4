@@ -67,7 +67,7 @@ const Shop = () => {
           if (campana) {
             const fechaFinCampana = new Date(campana.end_date);
             console.log("HAY CAMPANIA")
-            if (fechaFinCampana < fechaActual) {
+            if (fechaFinCampana > fechaActual) {
               console.log("SI ES VIGENTE")
 
               return {

@@ -17,6 +17,23 @@ services:
       - database
     networks:
       - backend-network
+  backoffice:
+    build: ./backoffice/
+    restart: on-failure
+    environment:
+      DB_HOST: "34.135.17.142"
+      DB_PORT: 5432
+      DB_NAME: "usuarios"
+      DB_USER: "postgres"
+      DB_PASSWORD: "PassArquiDB"
+      PORT: 3000
+      FLASK_ENV: "development"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    networks:
+      - backend-network      
   canje:
     build: ./canje/
     restart: on-failure

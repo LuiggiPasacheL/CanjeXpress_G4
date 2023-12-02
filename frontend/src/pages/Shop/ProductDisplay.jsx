@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 //const desc =  "Energistia an deliver atactica metrcs after avsionary Apropria trnsition enterpris an sources applications emerging 	psd template.";
 
 const ProductDisplay = ({ item }) => {
-  const { category,description,id,image,name,points, urlPicture } = item;
+  const { category, description, id, image, name, points, urlPicture, descuento } = item;
   const [prequantity, setQuantity] = useState(0);
   const [coupon, setCoupon] = useState("");
   const [size, setSize] = useState("Select Size");
   const [color, setColor] = useState("Select Color");
+  const puntosConDescuento = descuento ? points - descuento : points;
 
   const handleDecrease = () => {
     if (prequantity > 1) {
@@ -81,7 +82,9 @@ const ProductDisplay = ({ item }) => {
           <i className="icofont-star"></i>
           (3 review)
         </p>
-        <h4>Puntos: {points}</h4>
+       {/* Mostrar puntos con o sin descuento */}
+       <h4>Puntos: {puntosConDescuento}</h4>
+        {descuento && <h5>Descuento aplicado: {descuento}</h5>}
         <p>{description}</p>
       </div>
       {/* Single Product Cart Component here */}
