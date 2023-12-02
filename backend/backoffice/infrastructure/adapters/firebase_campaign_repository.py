@@ -49,3 +49,8 @@ class FirebaseCampaignRepository(CampaignRepository):
             return campaign_doc.to_dict() 
         else:
             return None      
+        
+    def get_all_campaigns(self):
+            campaigns_query = db.collection('campañas').stream()
+            campaigns = [doc.to_dict() for doc in campaigns_query]
+            return campaigns        

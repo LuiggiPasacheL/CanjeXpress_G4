@@ -39,5 +39,14 @@ def get_campaign(campaign_id):
     except Exception as e:
         print(f"Error retrieving campaign: {e}")
         return jsonify({'status': 'error', 'message': 'Internal Server Error'}), 500    
+    
+@app.route('/backoffice/campaign/', methods=['GET'])
+def get_all_campaigns():
+    try:
+        campaigns = campaign_service.get_all_campaigns()
+        return jsonify({'status': 'success', 'data': campaigns}), 200
+    except Exception as e:
+        print(f"Error retrieving campaigns: {e}")
+        return jsonify({'status': 'error', 'message': 'Internal Server Error'}), 500    
 if __name__ == '__main__':
     app.run(debug=True)

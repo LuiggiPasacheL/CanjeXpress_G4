@@ -14,3 +14,6 @@ class CampaignService:
 
     def get_campaign(self, campaign_id: int):
         return self.campaign_repository.get_campaign_by_id(campaign_id)        
+    
+    def get_all_campaigns(self):
+            return self.campaign_repository.get_all_campaigns()    
