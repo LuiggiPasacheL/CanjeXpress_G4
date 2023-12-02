@@ -1,0 +1,42 @@
+[
+    {
+        "category": "Men's Sneaker",
+        "description": "",
+        "id": "124e13b9-2d54-4b2f-a74d-a77b362d6ead",
+        "image": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fbaf991a78bc4896a3e9ad7800abcec6_9366/Ultraboost_22_Shoes_Black_GZ0127_01_standard.jpg",
+        "name": "ULTRABOOST 22 SHOES",
+        "points": 420,
+        "quantity": 0,
+        "urlPicture": ""
+    },
+    {
+        "category": "Men's Sneaker",
+        "description": "",
+        "id": "13cbc7ed-a61b-4883-9d42-82d7d8642b86",
+        "image": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/2cee64414e1f4f31baf1ae270099d950_9366/Lunar_New_Year_Ultraboost_DNA_Shoes_Black_GZ6074_01_standard.jpg",
+        "name": "LUNAR NEW YEAR ULTRABOOST DNA SHOES",
+        "points": 196,
+        "quantity": 0,
+        "urlPicture": ""
+    },
+    {
+        "category": "Men's Sneaker",
+        "description": "",
+        "id": "307f166f-1d04-4573-bc37-2f461ea9d4f7",
+        "image": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/69cbc73d0cb846889f89acbb011e68cb_9366/Supernova_Shoes_Black_S42722_01_standard.jpg",
+        "name": "SUPERNOVA SHOES",
+        "points": 245,
+        "quantity": 0,
+        "urlPicture": ""
+    },
+    {
+        "category": "Men's Sneaker",
+        "description": "",
+        "id": "4bf9798f-63bc-4a83-b0c6-6a3b816fe922",
+        "image": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/96a5f085fedf4e678095abad01056711_9366/Lite_Racer_Adapt_3.0_Shoes_Black_FX8802_01_standard.jpg",
+        "name": "LITE RACER ADAPT 3.0 SHOES",
+        "points": 229,
+        "quantity": 0,
+        "urlPicture": ""
+    }
+]
