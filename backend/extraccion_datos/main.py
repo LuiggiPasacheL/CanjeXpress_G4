@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 directory = os.path.join(os.path.dirname(__file__), "data")
 
-dataExtractor = FileExtractor(directory)
+dataExtractor = FileExtractor()
 
 repository = MockRepository(table_name=os.getenv("TABLE_NAME", "data"))
 requestCreateUser = RMQRequestCreateUser()

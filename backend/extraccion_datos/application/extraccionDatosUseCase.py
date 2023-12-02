@@ -20,7 +20,7 @@ class ExtraccionDatosUseCase:
                 self.repository.bulkInsertFile(file)
             return users_data
         except Exception as e:
-            logging.error(f"Error al extraer datos: {e.__class__.__name__}")
+            logging.error(f"Error al extraer datos: {e}")
             return None
 
     def get_users_data(self, file_path: str) -> list[dict]:
