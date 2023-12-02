@@ -126,11 +126,11 @@ const CartPage = () => {
               <table>
                 <thead>
                   <tr>
-                    <th className="cat-product">Product</th>
-                    <th className="cat-price">Price</th>
-                    <th className="cat-quantity">Quantity</th>
+                    <th className="cat-product">Producto</th>
+                    <th className="cat-price">Puntos</th>
+                    <th className="cat-quantity">Cantidad</th>
                     <th className="cat-toprice">Total</th>
-                    <th className="cat-edit">Edit</th>
+                    <th className="cat-edit">Editar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -235,19 +235,19 @@ const CartPage = () => {
                       <h3>Cart Totals</h3>
                       <ul className="lab-ul">
                         <li>
-                          <span className="pull-left">Cart Subtotal</span>
-                          <p className="pull-right">$ {cartSubtotal}</p>
+                          <span className="pull-left">Subtotal</span>
+                          <p className="pull-right">{cartSubtotal} Puntos</p>
                         </li>
                         <li>
                           <span className="pull-left">
-                            Shipping and Handling
+                            Costo del envio
                           </span>
-                          <p className="pull-right">Free Shipping</p>
+                          <p className="pull-right">Envio Gratis</p>
                         </li>
                         <li>
                           <span className="pull-left">Order Total</span>
                           <p className="pull-right">
-                            $ {orderTotal.toFixed(2)}
+                            {orderTotal.toFixed(2)} Puntos
                           </p>
                         </li>
                       </ul>
@@ -257,7 +257,7 @@ const CartPage = () => {
               </div>
               <div className="cart-checkout-box">
               <Button variant="primary" onClick={handleRedeem} className="py-2">
-                Proceed to Checkout
+                Canjear producto
               </Button>
               </div>
             </div>
