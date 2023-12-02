@@ -79,7 +79,7 @@ const ProductDisplay = ({ item }) => {
           <i className="icofont-star"></i>
           <i className="icofont-star"></i>
           <i className="icofont-star"></i>
-          (3 review)
+          (3 Reseñas)
         </p>
         <h4>Puntos: {points}</h4>
         <p>{description}</p>
