@@ -33,6 +33,18 @@ import ErrorPage from './components/ErrorPage.jsx';
 import PrivateRoute from './PrivateRoute/PrivateRoute.jsx';
 import AuthProvider from './contexts/AuthProvider.jsx';
 
+import BOHome from './pages/BackOffice/home/BOHome.jsx';
+import UsersList from './pages/BackOffice/list/UsersList.jsx';
+import ProductsList from './pages/BackOffice/list/ProductsList.jsx';
+import CampaignsList from "./pages/BackOffice/list/CampaignsList.jsx";
+import SingleUser from "./pages/BackOffice/single/SingleUser.jsx";
+import BOSingleProduct from "./pages/BackOffice/single/BOSingleProduct.jsx";
+import SingleCampaign from "./pages/BackOffice/single/SingleCampaign.jsx";
+import NewUser from "./pages/BackOffice/new/NewUser.jsx";
+import NewProduct from "./pages/BackOffice/new/NewProduct.jsx";
+import NewCampaign from "./pages/BackOffice/new/NewCampaign.jsx";
+import { productInputs, userInputs, campaignInputs } from "./utilis/formSource.js";
+
 
 const router = createBrowserRouter([
   {
@@ -81,6 +93,52 @@ const router = createBrowserRouter([
   {
     path: "/check-out",
     element: <CheckoutPage/>
+  },
+  {
+    path: "/backoffice",
+    element: <BOHome />,
+  },
+  {
+    path: "/backoffice/users",
+    element: <UsersList />
+  },
+  {
+    path: "/backoffice/users/newUser",
+    element: <NewUser
+        title="Crear nuevo usuario"
+    />
+  },
+  {
+    path: "/backoffice/user/:userId",
+    element: <SingleUser />
+  },
+  {
+    path: "/backoffice/products",
+    element: <ProductsList />
+  },
+  {
+    path: "/backoffice/products/newProduct",
+    element: <NewProduct
+        title="Añadir nuevo producto"
+    />
+  },
+  {
+    path: "/backoffice/product/:productId",
+    element: <BOSingleProduct />
+  },
+  {
+    path: "/backoffice/campaigns",
+    element: <CampaignsList />
+  },
+  {
+    path: "/backoffice/campaigns/newCampaign",
+    element: <NewCampaign
+        title="Crear nueva campaña"
+    />
+  },
+  {
+    path: "/backoffice/campaign/:campaignId",
+    element: <SingleCampaign />
   },
 ]);
 
