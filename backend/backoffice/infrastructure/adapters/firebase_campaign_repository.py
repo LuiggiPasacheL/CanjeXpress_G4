@@ -37,3 +37,15 @@ class FirebaseCampaignRepository(CampaignRepository):
                 print("APLICANDO CAMPANIA A PRODUCTO: ",product_doc)
                 products_ref.document(product_doc.id).update({'campana_id': campaign_id})
 
+    def update_campaign(self, campaign_id: int, campaign_data: dict) -> None:
+        if isinstance(campaign_data, Campaign):
+            campaign_data = asdict(campaign_data)
+        db.collection('campañas').document(str(campaign_id)).update(campaign_data)
+
+    def get_campaign_by_id(self, campaign_id: int):
+        campaign_ref = db.collection('campañas').document(str(campaign_id))
+        campaign_doc = campaign_ref.get()
+        if campaign_doc.exists:
+            return campaign_doc.to_dict() 
+        else:
+            return None      
