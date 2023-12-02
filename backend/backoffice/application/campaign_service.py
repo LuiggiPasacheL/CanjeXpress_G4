@@ -9,3 +9,8 @@ class CampaignService:
         campaign = Campaign(**campaign_data)
         campaing_id = self.campaign_repository.create_campaign(campaign)
         self.campaign_repository.update_product_campaign_id(campaign.brands, campaing_id)
+    def update_campaign(self, campaign_id: int, campaign_data: dict) -> None:
+        self.campaign_repository.update_campaign(campaign_id, campaign_data)
+
+    def get_campaign(self, campaign_id: int):
+        return self.campaign_repository.get_campaign_by_id(campaign_id)        
